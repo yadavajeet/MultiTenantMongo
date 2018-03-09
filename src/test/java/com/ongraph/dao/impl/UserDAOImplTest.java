@@ -9,7 +9,6 @@ import com.ongraph.TenantContext;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import com.ongraph.base.BaseSpringTest;
-import org.p1.dao.Bottle.Type;
 import com.ongraph.dao.IUserDAO;
 import com.ongraph.dao.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,15 +34,11 @@ public class UserDAOImplTest extends BaseSpringTest {
 		// Create user - in default database
 		
 		User user = getUser(loginName, firstName, middleName);
-		user.setBottles(getBottles());
 		userDAO.save(user);
 		
 		List<IndexInfo> indexInfos = mongoTemplate.indexOps(User.class).getIndexInfo();
-		System.out.println("DB ---->" + mongoTemplate.getDb());
 		for(IndexInfo idxInf : indexInfos) {
-			System.out.println("Indexe ---> " + idxInf.getName());
 			for(IndexField idxf: idxInf.getIndexFields()) {
-				System.out.println("On Field ---> " + idxf.getKey());
 			}
 			
 		}
@@ -53,7 +48,6 @@ public class UserDAOImplTest extends BaseSpringTest {
 		//	Create user - in tenant1 database
 		TenantContext.setTenant("tenant1");
 		user = getUser(loginName, firstName, middleName);
-		user.setBottles(getBottles());
 		userDAO.save(user);
 		indexInfos = mongoTemplate.indexOps(User.class).getIndexInfo();
 		System.out.println("DB ---->" + mongoTemplate.getDb());
@@ -70,7 +64,7 @@ public class UserDAOImplTest extends BaseSpringTest {
 		//	Create user - in tenant2 database
 		TenantContext.setTenant("tenant2");
 		user = getUser(loginName, firstName, middleName);
-		user.setBottles(getBottles());
+		//user.setBottles(getBottles());
 		userDAO.save(user);
 		indexInfos = mongoTemplate.indexOps(User.class).getIndexInfo();
 		System.out.println("DB ---->" + mongoTemplate.getDb());
@@ -84,7 +78,7 @@ public class UserDAOImplTest extends BaseSpringTest {
 		userDAO.delete(user);	
 	}
 	
-	public static List<Bottle> getBottles() {
+	/*public static List<Bottle> getBottles() {
 		List<Bottle> bottles = new ArrayList<>();
 		String pattern = "CamelBack";
 		
@@ -101,16 +95,13 @@ public class UserDAOImplTest extends BaseSpringTest {
 		bottles.add(bottle1);
 		
 		return bottles;
-	}
+	}*/
 	
 	public static User getUser(String loginName, String firstName, String middleName) {
 		User user = new User();
 		user.setFirstName(firstName);
-		user.setMiddleName(middleName);
 		user.setLastName("M");
 		user.setLoginName(loginName);
-		user.setDob(new Date());
-		user.setBottles(UserDAOImplTest.getBottles());
 		return user;
 	}
 }

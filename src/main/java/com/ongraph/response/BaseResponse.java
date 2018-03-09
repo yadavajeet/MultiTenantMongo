@@ -1,4 +1,4 @@
-package com.ongraph.controller;
+package com.ongraph.response;
 
 import org.springframework.http.HttpStatus;
 

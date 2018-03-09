@@ -16,6 +16,12 @@ public interface IUserDAO {
 
 	User update(User user);
 
+	User updateRole(User user);
+
 	void delete(User user);
+
+	List<User> getAllUsers();
+
+	List<User> getUsersByRoleId(Integer roleId);
 
 }

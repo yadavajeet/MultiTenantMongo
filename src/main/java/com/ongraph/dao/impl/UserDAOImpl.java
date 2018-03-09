@@ -5,6 +5,9 @@ import java.util.List;
 import com.ongraph.dao.IUserDAO;
 import com.ongraph.dao.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -12,6 +15,9 @@ public class UserDAOImpl implements IUserDAO {
 	
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	MongoOperations mongoOperations;
 
 	@Override
 	public List<User> findByFirstName(String firstName) {
@@ -48,10 +54,28 @@ public class UserDAOImpl implements IUserDAO {
 	}
 
 	@Override
+	public User updateRole(User user) {
+		User dbUser = userRepository.findOneByLoginName(user.getLoginName());
+		dbUser.setRole(user.getRole());
+		return userRepository.save(dbUser);
+	}
+	@Override
 	public void delete(User user) {
 		userRepository.delete(user);
 	}
-	
+
+	@Override
+	public List<User> getAllUsers() {
+		return userRepository.findAll();
+	}
+
+	@Override
+	public List<User> getUsersByRoleId(Integer roleId){
+		List<User> users = null;
+		users = mongoOperations.find(new Query().addCriteria(Criteria.where("role.roleId").is(roleId)), User.class);
+		return users;
+	}
+
 	protected UserRepository getUserRepository() {
 		return this.userRepository;
 	}

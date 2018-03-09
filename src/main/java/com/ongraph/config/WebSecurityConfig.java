@@ -24,6 +24,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        System.out.println("Inside security configurer adaptor");
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/v1/user/**").permitAll()
@@ -31,7 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginProcessingUrl("/login").usernameParameter("username").passwordParameter("password").permitAll()
-                .defaultSuccessUrl("/v1/user/pramod123");
+                .defaultSuccessUrl("/v1/user/get/getuser");
                 /*.loginPage("/login").failureUrl("/login-error")
                 .permitAll()
                 .and()
@@ -42,7 +43,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
-        System.out.println("In >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.");
         auth.setUserDetailsService(userDetailsService);
         return auth;
     }

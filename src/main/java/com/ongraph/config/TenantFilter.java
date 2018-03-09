@@ -28,22 +28,34 @@ public class TenantFilter implements Filter {
         System.out.println("Inside Filter");
         HttpServletRequest req = (HttpServletRequest)request;
         HttpServletResponse res = (HttpServletResponse) response;
-        String tenant = req.getHeader(TENANT_HEADER);
-        boolean tenantSet = false;
+        //String tenant = req.getHeader(TENANT_HEADER);
+        System.out.println("Username >> "+req.getParameter("username")+" password >>>> "+req.getParameter("password"));
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE");
+        res.setHeader("Access-Control-Max-Age", "3600");
+        res.setHeader("Access-Control-Allow-Headers", "Origin, X-TenantID, X-Requested-With, Content-Type, Accept, Authorization");
+
+        if ("OPTIONS".equalsIgnoreCase(req.getMethod())) {
+            res.setStatus(HttpServletResponse.SC_OK);
+        } else {
+            chain.doFilter(req, res);
+        }
+       /* boolean tenantSet = false;
 
         if(StringUtils.isEmpty(tenant)) {
+            System.out.println("Iside if of empty tenant");
             res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             res.setContentType(MediaType.APPLICATION_JSON_VALUE);
             res.getWriter().write("{\"error\": \"No tenant supplied\"}");
             res.getWriter().flush();
-            return;
+            //return;
         } else {
             if(StringUtils.equals(tenant, mongoDBCredentials.getPepsicoDatabaseName())) {
                 TenantContext.setTenant(tenant);
             }
             tenantSet = true;
-        }
-        chain.doFilter(req, res);
+        }*/
+        //chain.doFilter(req, res);
     }
 
     @Override
