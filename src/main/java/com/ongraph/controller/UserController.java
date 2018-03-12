@@ -35,7 +35,7 @@ public class UserController {
 		}
 	}
 
-	@PostMapping(value = "/update/{id}", produces = "application/json")
+	@PutMapping(value = "/update/{id}", produces = "application/json")
 	public BaseResponse updateUser(@RequestBody UserDTO userDTO, @PathVariable Integer id, HttpServletResponse resp) {
 			BaseResponse response = new BaseResponse();
 		try {
@@ -64,7 +64,7 @@ public class UserController {
 		return response;
 	}
 
-	@PostMapping(value= "/updaterole/{loginName}")
+	@PutMapping(value= "/updaterole/{loginName}")
 	public BaseResponse updateUserRole(@RequestBody RoleDTO roleDTO, @PathVariable String loginName) {
 		BaseResponse response = new BaseResponse();
 		UserDTO userDTO = null;
@@ -121,4 +121,5 @@ public class UserController {
 		}
 		return response;
 	}
+
 }

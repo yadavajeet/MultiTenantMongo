@@ -27,7 +27,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         System.out.println("Inside security configurer adaptor");
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/v1/user/**").permitAll()
+                .antMatchers("/v1/**").permitAll()
                 //.antMatchers("/", "/home").permitAll()
                 .anyRequest().authenticated()
                 .and()
